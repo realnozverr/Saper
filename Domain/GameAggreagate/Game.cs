@@ -7,13 +7,13 @@ using CSharpFunctionalExtensions;
 
 namespace Domain.GameAggreagate
 {
-    public class Game : Entity<Guid>
+    public class Game : Entity<Guid> ///решил что будет агрегатом а не ентити
     {
         private Game(){}
 
-        private Game(string width, string weight, int minesCount)
+        private Game(string width, string weight, int minesCount) : this()
         {
-
+            
         }
     }
 }
