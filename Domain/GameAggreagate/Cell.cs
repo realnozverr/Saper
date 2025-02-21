@@ -15,18 +15,17 @@ namespace Domain.GameAggreagate
 
         private Cell(int row, int col) : this()
         {
-            Coordinates = Coordinates.Create(row, col);
-            
+            Coordinates = Coordinates.Create(row, col); 
         }
 
-
-
+        public int IsMineCount { get; private set; }
+        public string Value { get; private set; } = " ";
         public bool IsMined { get; private set; } = false;
         public Coordinates Coordinates { get; private set; } = null!;
 
-        public void GetCell(int row, int col)
+        public static Cell Create(int row, int col)
         {
-
+            return new Cell(row, col);
         }
 
         public static bool operator ==(Cell? a, Cell? b)

@@ -32,7 +32,7 @@ namespace Domain.GameAggreagate
         /// <returns>возвращаем координаты</returns>
         private static bool ValidateCoordinate(int row, int col)
         {
-            return row is >= 2 and <= 30 && col is >= 2 and <= 30;
+            return row is <= 0&& col is <= 0;
         }
 
 
