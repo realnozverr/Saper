@@ -19,9 +19,20 @@ namespace Domain.GameAggreagate
 
         public static Coordinates Create(int row, int col)
         { 
-            if (row <= 0 || col <= 0)
-                throw new ArgumentException($"{nameof(row, col)}");
+            if (!ValidateCoordinate(row, col))
+                throw new ArgumentException($"{nameof(row)} cannot be greater 0");
+            if (!ValidateCoordinate(row, col))
+                throw new ArgumentException($"{nameof(col)} cannot be greater 0");
             return new Coordinates(row, col);
+        }
+
+        /// <summary>
+        /// переопределяем сравнение по значению
+        /// </summary>
+        /// <returns>возвращаем координаты</returns>
+        private static bool ValidateCoordinate(int row, int col)
+        {
+            return row is >= 2 and <= 30 && col is >= 2 and <= 30;
         }
 
 
