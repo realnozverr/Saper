@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
+using Domain.SharedKernel;
 
 namespace Domain.GameAggreagate
 {
-    public class Game : Entity<Guid> ///решил что будет агрегатом а не ентити
+    public class Game : Aggregate
     {
         private Game(){}
 
@@ -15,5 +16,7 @@ namespace Domain.GameAggreagate
         {
             
         }
+
+        public Cell[,] Field {  get; private set; }
     }
 }

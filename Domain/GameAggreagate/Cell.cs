@@ -28,6 +28,11 @@ namespace Domain.GameAggreagate
             return new Cell(row, col);
         }
 
+        public static Cell FindCell(Cell[,] field, int row, int col)
+        {
+            return field[row, col];
+        }
+
         public static bool operator ==(Cell? a, Cell? b)
         {
             if (a is null && b is null)
@@ -40,6 +45,5 @@ namespace Domain.GameAggreagate
         }
 
         public static bool operator !=(Cell? a, Cell? b) => !(a == b);
-
     }
 }
