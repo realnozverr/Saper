@@ -8,7 +8,7 @@ namespace Domain.GameAggreagate
     public class Coordinates : ValueObject<Coordinates>
     {
         private Coordinates(){}
-        private Coordinates(int row, int col)
+        private Coordinates(int row, int col) : this()
         {
             Row = row;
             Col = col;

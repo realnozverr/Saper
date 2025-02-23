@@ -9,23 +9,25 @@ using CSharpFunctionalExtensions;
 
 namespace Domain.GameAggreagate
 {
-    public class Cell : Entity<int>
+    public class Cell : Entity
     {
         private Cell() { }
 
-        private Cell(int row, int col) : this()
+        private Cell(int row, int col, bool isMined) : this()
         {
-            Coordinates = Coordinates.Create(row, col); 
+            Coordinates = Coordinates.Create(row, col);
+            IsMined = isMined;
+            IsMineCount = 0;
         }
 
         public int IsMineCount { get; private set; }
         public string Value { get; private set; } = " ";
-        public bool IsMined { get; private set; } = false;
+        public bool IsMined { get; private set; }
         public Coordinates Coordinates { get; private set; } = null!;
 
-        public static Cell Create(int row, int col)
+        public static Cell Create(int row, int col, bool isMined = false)
         {
-            return new Cell(row, col);
+            return new Cell(row, col, isMined);
         }
 
         public static Cell FindCell(Cell[,] field, int row, int col)

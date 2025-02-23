@@ -12,11 +12,33 @@ namespace Domain.GameAggreagate
     {
         private Game(){}
 
-        private Game(string width, string weight, int minesCount) : this()
+        private Game(int row, int col, int minesCount) : this()
         {
-            
+            Field = new Cell[row, col];
+            Status = Status.Incomplete;
+
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    Field[i, j] = Cell.Create(row, col);
+                }
+            }
         }
 
-        public Cell[,] Field {  get; private set; }
+        public Cell[,] Field { get; private set; } = null!;
+        public Status Status { get; private set; } = null!;
+
+        public static Game Create()
+        {
+
+        }
+
+        private static bool ValidateGame(int row, int col, int minesCount)
+        {
+            return row >= 2 && row <= 30 &&
+                   col >= 2 && col <= 30 &&
+                   minesCount > 0 && minesCount < (row * col);
+        }
     }
 }
