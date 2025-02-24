@@ -10,7 +10,8 @@ namespace Domain.GameAggreagate
     public class Status : Entity<int>
     {
         public static readonly Status Completed = new Status(1, nameof(Completed).ToLowerInvariant());
-        public static readonly Status Incomplete = new Status(2, nameof(Incomplete).ToLowerInvariant());
+        public static readonly Status Lose = new Status(2, nameof(Lose).ToLowerInvariant());
+        public static readonly Status Incomplete = new Status(3, nameof(Incomplete).ToLowerInvariant());
 
         private Status(){}
 

@@ -14,6 +14,8 @@ namespace Domain.GameAggreagate
 
         private Game(int row, int col, int minesCount) : this()
         {
+            Id = Guid.NewGuid();
+            MinesCount = minesCount;
             Field = new Cell[row, col];
             Status = Status.Incomplete;
 
@@ -21,24 +23,116 @@ namespace Domain.GameAggreagate
             {
                 for (int j = 0; j < col; j++)
                 {
-                    Field[i, j] = Cell.Create(row, col);
+                    Field[i, j] = Cell.Create(i, j);
+                }
+            }
+
+            PlaceMines(row, col, minesCount);
+        }
+
+        public Guid Id { get; private set; }
+        public int MinesCount { get; private set; } 
+        public Cell[,] Field { get; private set; } = null!;
+        public Status Status { get; private set; } = null!;
+        private static readonly Random Rand = new Random();
+
+        public static Game Create(int row, int col, int minesCount)
+        {
+            if (row < 2 || row > 30)
+                throw new ArgumentException($"{nameof(row)} must be between 2 and 30.");
+            if (col < 2 || col > 30)
+                throw new ArgumentException($"{nameof(col)} must be between 2 and 30.");
+            if (minesCount <= 0)
+                throw new ArgumentException($"{nameof(minesCount)} must be greater than 0.");
+            if (minesCount >= (row * col))
+                throw new ArgumentException($"{nameof(minesCount)} must be less than the total number of cells ({row * col}).");
+            return new Game(row, col, minesCount);
+        }
+
+        private void PlaceMines(int row, int col, int minesCount)
+        {
+            int plantedMines = 0;
+
+            while (plantedMines < minesCount)
+            {
+                int randomRow = Rand.Next(row);
+                int randomCol = Rand.Next(col);
+
+                if (!Field[randomRow, randomCol].IsMined)
+                {
+                    Field[randomRow, randomCol].PlaceMine();
+                    plantedMines++;
                 }
             }
         }
 
-        public Cell[,] Field { get; private set; } = null!;
-        public Status Status { get; private set; } = null!;
-
-        public static Game Create()
+        public Cell[,] All(Status status)
         {
-
+            for (int i = 0; i < Field.GetLength(0); i++)
+            {
+                for (int j = 0; j < Field.GetLength(1); j++)
+                {
+                    if (Field[i, j].IsMined)
+                    {
+                        Field[i, j].SetValue(status == Status.Lose ? "X" : "M");
+                    }
+                    else
+                    {
+                        Field[i, j].SetValue(CountMinesAround(i, j).ToString());
+                    }
+                }
+            }
+            return Field;
         }
 
-        private static bool ValidateGame(int row, int col, int minesCount)
+        public Cell[,] TurnCell(int row, int col)
         {
-            return row >= 2 && row <= 30 &&
-                   col >= 2 && col <= 30 &&
-                   minesCount > 0 && minesCount < (row * col);
+            if (Field[row, col] == null)
+            {
+                throw new ArgumentException($"Cell at ({row}, {col}) is not initialized.");
+            }
+
+            if (Field[row, col].IsMined)
+            {
+                All(Status.Lose);
+            }
+
+            Field[row, col].SetValue(CountMinesAround(row, col).ToString());
+            MinesCount--;
+
+            if(MinesCount == 0)
+            {
+                All(Status.Completed);
+            }
+
+            return Field;
+        }
+
+        private int CountMinesAround(int row, int col)
+        {
+            int mineCount = 0;
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (i == 0 && j == 0)
+                        continue;
+
+                    int neighborRow = row + i;
+                    int neighborCol = col + j;
+
+                    if (neighborRow >= 0 && neighborRow < Field.GetLength(0) &&
+                        neighborCol >= 0 && neighborCol < Field.GetLength(1))
+                    {
+                        if (Field[neighborRow, neighborCol].IsMined)
+                        {
+                            mineCount++;
+                        }
+                    }
+                }
+            }
+
+            return mineCount;
         }
     }
 }
