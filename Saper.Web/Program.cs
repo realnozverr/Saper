@@ -1,4 +1,7 @@
 
+using Application.Ports.GameCache;
+using Infrastructure.Adapters.GameCache;
+
 namespace Saper.Web
 {
     public class Program
@@ -10,13 +13,14 @@ namespace Saper.Web
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddSingleton<IGameCache, GameCache>();
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
