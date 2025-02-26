@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="UseCases\Queries\" />
+    <Folder Include="Ports\" />
   </ItemGroup>
 
   <ItemGroup>

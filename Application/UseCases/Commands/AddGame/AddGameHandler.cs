@@ -16,7 +16,7 @@ namespace Application.UseCases.Commands.AddGame
 
         public async Task<GameInfoResponse> Handle(AddGameCommand message, CancellationToken cancellationToken)
         {
-
+            
         }
     }
 }
