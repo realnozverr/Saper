@@ -23,9 +23,9 @@ namespace Application.UseCases.Commands.AddGame
             await _gameCache.AddGame(newGame);
             return new GameInfoResponse(
                 newGame.Id,
-                message.Width,
-                message.Height,
-                message.MinesCount,
+                newGame.Field.GetLength(0),
+                newGame.Field.GetLength(1),
+                newGame.MinesCount,
                 newGame.Status == Status.Completed,
                 GameInfoResponse.ConvertFieldToString(newGame.Field)
                 );
