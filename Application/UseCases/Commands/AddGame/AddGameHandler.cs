@@ -25,6 +25,7 @@ namespace Application.UseCases.Commands.AddGame
                 newGame.Id,
                 message.Width,
                 message.Height,
+                message.MinesCount,
                 newGame.Status == Status.Completed,
                 GameInfoResponse.ConvertFieldToString(newGame.Field)
                 );

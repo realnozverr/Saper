@@ -10,17 +10,19 @@ namespace Application.UseCases
     public record GameInfoResponse
     {
         private GameInfoResponse(){}
-        public GameInfoResponse(Guid gameId, int width, int height, bool completed, string[,] field) :this()
+        public GameInfoResponse(Guid gameId, int width, int height, int mines_count, bool completed, string[,] field) :this()
         {
             GameId = gameId;
             Width = width;
             Height = height;
+            MinesCount = mines_count;
             Completed = completed;
             Field = field;
         }
         public Guid GameId  { get; init; }
         public int Width { get; init; }
         public int Height { get; init; }
+        public int MinesCount { get; init; }
         public bool Completed { get; init; }
         public string[,] Field { get; init; }
 

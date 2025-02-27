@@ -27,7 +27,7 @@ namespace Saper.Web.Controllers
             }
 
             var gameInfo = await _mediator.Send(command);
-            _logger.LogInformation("пиривет рабаотаем");
+            _logger.LogInformation("Game add");
             return Ok(gameInfo);
         }
     }
