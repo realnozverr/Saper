@@ -1,6 +1,8 @@
 
 using Application.Ports.GameCache;
+using Application.UseCases.Commands.AddGame;
 using Infrastructure.Adapters.GameCache;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Saper.Web
 {
@@ -10,16 +12,28 @@ namespace Saper.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://minesweeper-test.studiotg.ru") 
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddGameHandler).Assembly));
 
             builder.Services.AddSingleton<IGameCache, GameCache>();
 
             var app = builder.Build();
+
+            app.UseCors("AllowSpecificOrigin");
 
             if (app.Environment.IsDevelopment())
             {

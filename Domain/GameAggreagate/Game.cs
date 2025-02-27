@@ -95,17 +95,54 @@ namespace Domain.GameAggreagate
             if (Field[row, col].IsMined)
             {
                 All(Status.Lose);
+                return Field; 
             }
 
-            Field[row, col].SetValue(CountMinesAround(row, col).ToString());
+            
+            OpenCell(row, col);
             MinesCount--;
 
-            if(MinesCount == 0)
+            if (MinesCount == 0)
             {
                 All(Status.Completed);
             }
 
             return Field;
+        }
+
+        private void OpenCell(int row, int col)
+        {
+           
+            if (row < 0 || row >= Field.GetLength(0) || col < 0 || col >= Field.GetLength(1))
+            {
+                return;
+            }
+
+            Cell cell = Field[row, col];
+
+            if (cell.IsOpened || cell.IsMined)
+            {
+                return; 
+            }
+
+            cell.Open(); 
+
+            
+            int mineCount = CountMinesAround(row, col);
+            cell.SetValue(mineCount.ToString());
+
+            
+            if (mineCount == 0)
+            {
+                for (int i = -1; i <= 1; i++)
+                {
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        if (i == 0 && j == 0) continue; 
+                        OpenCell(row + i, col + j); 
+                    }
+                }
+            }
         }
 
         private int CountMinesAround(int row, int col)

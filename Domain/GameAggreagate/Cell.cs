@@ -9,9 +9,10 @@ namespace Domain.GameAggreagate
         private Cell(int row, int col) : this()
         {
             Coordinates = Coordinates.Create(row, col);
-            IsMineCount = 0;
+            IsMineCount = 0;    
         }
 
+        public bool IsOpened { get; private set; } = false;
         public int IsMineCount { get; private set; }
         public string Value { get; private set; } = " ";
         public bool IsMined { get; private set; } = false;
@@ -30,6 +31,11 @@ namespace Domain.GameAggreagate
         public void SetValue(string value)
         {
             Value = value;
+        }
+
+        public void Open()
+        {
+            IsOpened = true;
         }
 
         public static bool operator ==(Cell? a, Cell? b)

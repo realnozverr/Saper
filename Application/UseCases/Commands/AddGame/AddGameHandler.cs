@@ -19,9 +19,15 @@ namespace Application.UseCases.Commands.AddGame
 
         public async Task<GameInfoResponse> Handle(AddGameCommand message, CancellationToken cancellationToken)
         {
-            var newGame = Game.Create(message.Row, message.Col, message.MinesCount)
+            var newGame = Game.Create(message.Width, message.Height, message.MinesCount);
             await _gameCache.AddGame(newGame);
-            return new GameInfoResponse(newGame.Id, message.Row, message.Col, newGame.Status, )
+            return new GameInfoResponse(
+                newGame.Id,
+                message.Width,
+                message.Height,
+                newGame.Status == Status.Completed,
+                GameInfoResponse.ConvertFieldToString(newGame.Field)
+                );
         }
     }
 }
